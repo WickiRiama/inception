@@ -14,8 +14,6 @@ RUN mkdir -p /etc/nginx/ssl && \
 
 # give rights to access root file and to set the owner as www-data
 RUN chmod 755 /var/www/html && \
-    touch /var/www/html/index.html && \
-    echo > /var/www/html/index.html "Hello there !" && \
     chown -R www-data:www-data /var/www/html
 
 EXPOSE 443
