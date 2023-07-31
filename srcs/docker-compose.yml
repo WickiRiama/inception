@@ -1,24 +1,46 @@
 version: '3.5'
 services:
-  adminer:
-    container_name: adminer
-    build: requirements/bonus/adminer/.
+  # adminer:
+  #   container_name: adminer
+  #   build: requirements/bonus/adminer/.
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - mynetwork
+
+  # mariadb:
+  #   container_name: mariadb
+  #   build: requirements/mariadb/.
+  #   restart: always
+  #   networks:
+  #     - mynetwork
+  #   volumes:
+  #     - db:/var/lib/mysql
+  #   env_file:
+  #     - .env
+
+  nginx:
+    container_name: nginx
+    build: requirements/nginx/.
     restart: always
+    volumes:
+      WordPress:/var/www/html
+    depends_on:
+      - wordpress
     ports:
       - "80:80"
     networks:
       - mynetwork
 
-  mariadb:
-    container_name: mariadb
-    build: requirements/mariadb/.
+  wordpress:
+    container_name: wordpress
+    build: requirements/wordpress/.
     restart: always
+    volumes:
+      - WordPress:/var/www/html
     networks:
       - mynetwork
-    volumes:
-      - db:/var/lib/mysql
-    env_file:
-      - .env
 
 networks:
   mynetwork:
@@ -26,9 +48,16 @@ networks:
     driver: bridge
 
 volumes:
-  db:
+  # db:
+  #   driver: local
+  #   driver_opts:
+  #     type: 'none'
+  #     o: 'bind'
+  #     device: /home/mriant/data/database/
+
+  WordPress:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/mriant/data/database/
+      device: /home/mriant/data/website
