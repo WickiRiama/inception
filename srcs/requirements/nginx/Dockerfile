@@ -6,16 +6,16 @@ RUN apt-get -y update && \
     apt-get -y install nginx
 
 # copy configuration file into container
-COPY ./conf/nginx.conf /etc/nginx/
+COPY ./conf/nginx.conf /etc/nginx/sites-available/nginx.conf
 
 RUN mkdir -p /etc/nginx/ssl && \
     apt-get install openssl -y && \
     openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=mriant.42.fr/UID=mriant"
 
 # give rights to access root file and to set the owner as www-data
-RUN chmod 755 /var/www/html && \
-    chown -R www-data:www-data /var/www/html
+# RUN chmod 755 /var/www/html && \
+#     chown -R www-data:www-data /var/www/html
 
-EXPOSE 443
+# EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]
