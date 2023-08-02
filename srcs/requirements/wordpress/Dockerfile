@@ -16,4 +16,5 @@ COPY ./conf/index.php /var/www/html/wordpress/index.php
 
 EXPOSE 9000
 
-ENTRYPOINT [ "php-fpm7.3", "-F" ]
+ENTRYPOINT [ "php-fpm7.4", "-F" ]
+# ENTRYPOINT [ "sleep", "infinity" ]
