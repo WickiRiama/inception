@@ -9,7 +9,7 @@ RUN apt-get update -y && \
 RUN mkdir /run/php
 
 # Allow external connections
-COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 # Create index.php
 COPY ./conf/index.php /var/www/html/wordpress/index.php
@@ -17,4 +17,3 @@ COPY ./conf/index.php /var/www/html/wordpress/index.php
 EXPOSE 9000
 
 ENTRYPOINT [ "php-fpm7.4", "-F" ]
-# ENTRYPOINT [ "sleep", "infinity" ]
