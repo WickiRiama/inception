@@ -11,7 +11,7 @@ COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 # copy launch file
 COPY ./tools/start_mariadb.sh /start_mariadb.sh
 RUN chmod +x /start_mariadb.sh
-# RUN chmod -R 770 /var/lib/mysql && chgrp -R mysql /var/lib/mysql
+RUN chmod -R 770 /var/lib/mysql && chgrp -R mysql /var/lib/mysql
 
 CMD ["/start_mariadb.sh"]
 

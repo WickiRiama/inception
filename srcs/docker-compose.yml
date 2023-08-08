@@ -1,29 +1,37 @@
 version: '3.5'
 services:
-  # adminer:
-  #   container_name: adminer
-  #   build: requirements/bonus/adminer/.
-  #   restart: always
-  #   ports:
-  #     - "80:80"
-  #   networks:
-  #     - mynetwork
+  adminer:
+    container_name: adminer
+    build: requirements/bonus/adminer/.
+    restart: unless-stopped
+    expose:
+      - "80"
+    networks:
+      - mynetwork
 
-  # mariadb:
-  #   container_name: mariadb
-  #   build: requirements/mariadb/.
-  #   restart: always
-  #   networks:
-  #     - mynetwork
-  #   volumes:
-  #     - db:/var/lib/mysql
-  #   env_file:
-  #     - .env
+  mariadb:
+    container_name: mariadb
+    build: requirements/mariadb/.
+    restart: unless-stopped
+    networks:
+      - mynetwork
+    volumes:
+      - db:/var/lib/mysql
+    env_file:
+      - .env
+    expose:
+      - "3306"
+    healthcheck:
+      test: ["CMD", "mysql", "-u", "${MYDB_USER}", "-p${MYDB_PASSWORD}"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   nginx:
     container_name: nginx
     build: requirements/nginx/.
-    restart: always
+    restart: unless-stopped
     volumes:
       - WordPress:/var/www/html
     depends_on:
@@ -36,11 +44,16 @@ services:
   wordpress:
     container_name: wordpress
     build: requirements/wordpress/.
-    restart: always
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
     volumes:
       - WordPress:/var/www/html
     networks:
       - mynetwork
+    expose:
+      - "9000"
 
 networks:
   mynetwork:
@@ -48,12 +61,12 @@ networks:
     driver: bridge
 
 volumes:
-  # db:
-  #   driver: local
-  #   driver_opts:
-  #     type: 'none'
-  #     o: 'bind'
-  #     device: /home/mriant/data/database/
+  db:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/mriant/data/database/
 
   WordPress:
     driver: local
