@@ -3,7 +3,7 @@ FROM debian:11
 # Install php-fpm and mariaDB client
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt install php-fpm  -y && \
+    apt install php-fpm php-mysql -y && \
     apt-get install mariadb-client -y
 
 # Create the PID file
@@ -17,11 +17,12 @@ COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 # Wordpress
 RUN apt-get install wget -y && \
-    wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www && \
-    cd /var/www/ && \
-    tar -xvf wordpress-6.0-fr_FR.tar.gz && \
-    rm wordpress-6.0-fr_FR.tar.gz && \
-    chown -R root:root /var/www/wordpress
+    wget https://wordpress.org/latest.tar.gz && \
+    mkdir -p /var/www/html/ && \
+    tar -xzvf latest.tar.gz -C /var/www/html/ && \
+    rm -rf latest.tar.gz
+    # sleep 30
+    # chown -R root:root /var/www/html/wordpress
 
 # CLI Wordpress
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \

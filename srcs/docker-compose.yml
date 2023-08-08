@@ -49,7 +49,7 @@ services:
       mariadb:
         condition: service_healthy
     volumes:
-      - WordPress:/var/www/html
+      - WordPress:/var/www/html/
     networks:
       - mynetwork
     expose:
