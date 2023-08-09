@@ -3,8 +3,19 @@
 # set -x
 
 service mariadb start
+
+max_tries=10
+current_try=1
+
+while !(mysqladmin ping > /dev/null) && [ $current_try -le $max_tries ]
+do
+    echo "Waiting for database..."
+    sleep 3
+    current_try=$((current_try + 1))
+done
+
 # service start mariadb
-sleep 10
+# sleep 10
 
 mysql -e "CREATE USER IF NOT EXISTS \`${MYDB_USER}\`@'%' IDENTIFIED BY '${MYDB_PASSWORD}';"
 mysql -e "GRANT ALL PRIVILEGES ON \`${MY_DATABASE}\`.* TO \`${MYDB_USER}\`@'%' IDENTIFIED BY '${MYDB_PASSWORD}';"
