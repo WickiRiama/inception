@@ -20,9 +20,8 @@ RUN apt-get install wget -y && \
     wget https://wordpress.org/latest.tar.gz && \
     mkdir -p /var/www/html/ && \
     tar -xzvf latest.tar.gz -C /var/www/html/ && \
-    rm -rf latest.tar.gz
-    # sleep 30
-    # chown -R root:root /var/www/html/wordpress
+    rm -rf latest.tar.gz && \
+    chown -R root:root /var/www/html/wordpress
 
 # CLI Wordpress
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
