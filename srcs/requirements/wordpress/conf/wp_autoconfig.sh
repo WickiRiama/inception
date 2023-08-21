@@ -3,7 +3,6 @@
 if [ ! -f /var/www/html/wordpress/wp-config.php ]
 then
     cd /var/www/html/wordpress
-    echo a
     wp config create --allow-root \
                      --dbname=$MY_DATABASE \
                      --dbuser=$MYDB_USER \
